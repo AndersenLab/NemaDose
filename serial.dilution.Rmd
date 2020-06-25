@@ -9,10 +9,9 @@ output:
 ---
 
 ```{r setup, include=FALSE, echo=FALSE}
-library(tidyverse)
-library(knitr)
-library(plyr)
-library(kableExtra)
+require(tidyverse)
+require(knitr)
+require(kableExtra)
 # opts_knit$set(root.dir=normalizePath('../'))
 setwd("~/Documents/projects/NemaDose/") # Set to repo directory
 options(knitr.table.format = "html") 
