@@ -1,29 +1,29 @@
-Drug,High_Dose_uM,Drug_Stock_Concentration_mM,highest_concentration_possible_48hassay_at_1%DMSO_uM,stock_made,DilutionFactors,redo_PD1074,assay
-Aldicarb,5000,2000,6666.7,,,no,
-Cadmium dichloride,200,500,1666.7,,,no,
-Chlorfenapyr,10,500,1666.7,,,no,
-Copper(II) chloride,200,500,1666.7,,,no,
-Manganese dichloride,2000,1000,3333.3,,,no,
-Methomyl,400,1000,3333.3,,,no,
-Methylmercury dichloride,250,150,500,,,no,
-Nickel dichloride,200,2500,8333.3,,,no,
-Paraquat,4000,1500,5000,,,no,
-Pyraclostrobin,1500,500,1666.7,,,no,
-Silver nitrate,250,100,333.3,,,no,
-Triphenyl phosphate,200,100,333.3,,,no,
-Zinc dichloride,400,1000,3333.3,,,no,
-Carbaryl,1250,500,1666.7,yes,2,yes,08A
-Chlorothalonil,250,75,250,yes,5,yes,08A
-Chlorpyrifos,40,100,333.3,yes,5,yes,08A
-D-phenothrin,5000,1500,5000,yes,2,yes,08A
-Lead(II) nitrate,1000,500,1666.7,yes,2,yes,08A
-Malathion,4000,1200,4000,yes,2,yes,08A
-Mancozeb,250,75,250,yes,5,yes,08A
-Parathion,400,250,833.3,yes,2,yes,08B
-"2,4-D",1000,500,1666.7,yes,1.25,yes,08B
-Arsenic trioxide,1500,450,1500,no,2,yes,08B
-Atrazine,1500,500,1666.7,yes,1.25,yes,08B
-Carboxin,2500,1000,3333.3,yes,2,yes,08B
-Deltamethrin,2500,750,2500,no,2,yes,08B
-Permethrin,10000,3000,3000,no,5,yes,08B
-Propoxur,5000,1500,5000,no,2,yes,08B
+Drug,High_Dose_uM,Drug_Stock_Concentration_mM,highest_concentration_possible_48hassay_at_1%DMSO_uM,drug_stock_prep_date,stock_made,diluent,DilutionFactors,redo_PD1074,assay
+Aldicarb,5000,2000,6666.7,20200126,,DMSO,2,no,09A
+Cadmium dichloride,200,500,1666.7,20200126,,water,2,no,09A
+Chlorfenapyr,10,500,1666.7,20200126,,DMSO,2,no,09A
+Copper(II) chloride,200,500,1666.7,20200126,,water,2,no,09A
+Manganese dichloride,2000,1000,3333.3,,,water,2,no,
+Methomyl,400,1000,3333.3,20200126,,DMSO,2,no,09A
+Methylmercury dichloride,250,150,500,20200126,,DMSO,2,no,09A
+Nickel dichloride,200,2500,8333.3,20200126,,water,2,no,09A
+Paraquat,4000,1500,5000,20200126,,water,2,no,09A
+Pyraclostrobin,1500,500,1666.7,20200126,,DMSO,2,no,09A
+Silver nitrate,250,100,333.3,20200126,,water,2,no,09A
+Triphenyl phosphate,200,100,333.3,20200126,,DMSO,2,no,09A
+Zinc dichloride,400,1000,3333.3,20200126,,water,2,no,09A
+Carbaryl,1250,500,1666.7,,yes,DMSO,2,yes,
+Chlorothalonil,250,75,250,,yes,DMSO,2,yes,
+Chlorpyrifos,40,100,333.3,,yes,DMSO,2,yes,
+D-phenothrin,5000,1500,5000,,yes,DMSO,2,yes,
+Lead(II) nitrate,1000,500,1666.7,,yes,water,2,yes,
+Malathion,4000,1200,4000,,yes,DMSO,2,yes,
+Mancozeb,250,75,250,,yes,DMSO,2,yes,
+Parathion,400,250,833.3,,yes,DMSO,2,yes,
+"2,4-D",1000,500,1666.7,,yes,DMSO,2,yes,
+Arsenic trioxide,1500,450,1500,,no,DMSO,2,yes,
+Atrazine,1500,500,1666.7,,yes,DMSO,2,yes,
+Carboxin,2500,1000,3333.3,,yes,DMSO,2,yes,
+Deltamethrin,2500,750,2500,,no,DMSO,2,yes,
+Permethrin,10000,3000,3000,,no,DMSO,2,yes,
+Propoxur,5000,1500,5000,,no,DMSO,2,yes,

@@ -1,8 +1,10 @@
 ---
 title: "Serial Dilution and Feed Preparation"
-subtitle: "Toxin 10A"
+subtitle: "`r params$assay`"
 author: "Sam Widmayer"
-date: "`r format(Sys.time(), '%d %B %Y')`"
+params:
+  date: "`r format(Sys.time(), '%d %B %Y')`"
+  assay: "toxin11A"
 output: 
   html_document:
     css: drug.dilution.style.css
@@ -10,6 +12,7 @@ output:
 
 ```{r setup, include=FALSE, echo=FALSE}
 require(tidyverse)
+require(RColorBrewer)
 require(knitr)
 require(kableExtra)
 # opts_knit$set(root.dir=normalizePath('../'))
@@ -24,7 +27,8 @@ compound.sheet <- read.csv("drug_stock_sheet.csv")
 ```
 
 ```{r echo=FALSE}
-Strains = 8
+Strain.List = c("PD1074","CB4856","RC301","ECA248","MY16","ECA36","ECA396","XZ1516")
+Strains = length(Strain.List)
 Reps = 4
 N_Doses = 12
 N_Bleaches = 1
@@ -86,10 +90,11 @@ n_microcentrifuge <- ifelse(n_microcentrifuge < 0, 0, n_microcentrifuge)
 ```
 ### Experimental Factors:
 #### ```r N_Bleaches``` Independent Bleach(es)
-#### ```r Strains``` Strains
+#### ```r Strains``` Strain(s): ```r Strain.List```
 #### ```r N_Doses``` Doses of ```r Drugs``` Compounds
 #### ```r Reps``` Replicates of each Dose per Strain
 #### ```r Excess_Percent```% Excess Accounted for in Design
+
 #### Chosen Dilution Factors:
 ```{r echo=FALSE}
 df.dat <- data.frame(DrugList, DilutionFactors)
@@ -174,9 +179,6 @@ rownames(Dilution.Table) <- c("Final Dose in Well (uM)",
                               "Diluent Volume (uL)",
                               "Transfer Volume (uL)")
 serialdilutiontable[[i]] <- Dilution.Table
-
-
-
 Dose_Volume <- rep(V_drugdilution, N_Doses)
 fooddosetable <- data.frame(rbind((Dose_Volume/temp_excess),
                                   (V_foodperdose-(Dose_Volume/temp_excess))
@@ -202,3 +204,151 @@ kable_loop <- function(w, x, y, z){
 }
 purrr::pmap(looplist, kable_loop) %>% compact()
 ```
+
+### Plate Design(s):
+
+```{r message=TRUE, warning=TRUE, include=FALSE}
+# Constants
+assay_type <- "48h"
+food_conc_OD <- 10
+food_type <- "15hHB101_20200127"
+diluent_concentration_perc <- "1"
+drug_prep_method <- "serial; Rscript"
+
+# Strains
+strains.df <- t(data.frame(Strain.List))
+strain.prefix <- "Strain"; strain.suffix <- seq(1:Strains)
+colnames(strains.df) <- paste(strain.prefix, strain.suffix, sep = "_")
+# Reps
+rep.df <- t(data.frame(seq(1:Reps)))
+rep.prefix <- "Rep"; rep.suffix <- seq(1:Reps)
+colnames(rep.df) <- paste(rep.prefix, rep.suffix, sep = "_")
+# Bleaches
+bleach.df <- t(data.frame(seq(1:N_Bleaches)))
+bleach.prefix <- "bleach"; bleach.suffix <- seq(1:N_Bleaches)
+colnames(bleach.df) <- paste(bleach.prefix, bleach.suffix, sep = "_")
+
+# Combining
+drug.dose.list <- list()
+for(i in 1:length(drug)){
+  doses <- data.frame(serialdilutiontable[i])
+  drug.doses <- data.frame(drug[i], doses[1,])
+  colnames(drug.doses) <- c("drug",colnames(drug.doses)[-1])
+  rownames(drug.doses) <- i
+  drug.dose.list[[i]] <- cbind(drug.doses,strains.df) %>%
+    cbind(.,rep.df) %>%
+    cbind(.,bleach.df) %>%
+    dplyr::mutate(assay_type = assay_type,
+                  food_conc_OD = food_conc_OD,
+                  food_type = food_type,
+                  diluent_concentration_perc = diluent_concentration_perc,
+                  drug_prep_method = drug_prep_method)
+}
+drug.dose.df <- do.call(rbind, drug.dose.list)
+diluent <- compound.sheet %>%
+  dplyr::select(Drug, diluent, drug_stock_prep_date) %>%
+  dplyr::rename(drug = Drug)
+# 8 Strain Design --> Other groupings possible but not explored so far
+prelim.design <- drug.dose.df %>%
+  dplyr::left_join(., diluent) %>%
+  dplyr::arrange(diluent) %>%
+  tidyr::pivot_longer(cols = contains("Strain"), names_to = "strain.cat", values_to = "strain") %>% # strains
+  tidyr::pivot_longer(cols = contains("Dose"), names_to = "dose.cat", values_to = "concentration_um") %>% # dose
+  tidyr::pivot_longer(cols = contains("bleach"), names_to = "bleach.cat", values_to = "bleach") %>% # bleach
+  tidyr::pivot_longer(cols = contains("Rep", ignore.case = F), names_to = "rep.cat", values_to = "replicate") %>% # reps
+  dplyr::select(assay_type, food_conc_OD, food_type, diluent, drug, concentration_um, strain, bleach, diluent_concentration_perc, drug_stock_prep_date, drug_prep_method, replicate) %>%
+  dplyr::group_by(drug, replicate) %>%
+  tidyr::nest()
+
+design.plates <- list()
+for(i in 1:length(prelim.design$data)){
+  x  <- prelim.design$data[[i]] %>%
+    dplyr::group_by(strain) %>%
+    tidyr::nest()
+  rows <- c("A","B","C","D","E","F","G","H")
+  
+  plates <- list()
+  for(j in 1:length(x$data)){
+    y <- x$data[[j]] %>%
+      dplyr::mutate(well.num = seq(1:nrow(.)),
+                    strain = x$strain[[j]])
+    if(j > 8){
+      y$row <- rows[j%%8]
+    } else {
+        y$row <- rows[j]
+    }
+    y$Metadata_Well <- sprintf(paste(y$row,"%02d",sep = ""), y$well.num)
+    plates[[j]] <- y 
+  }
+  
+  
+  plate.prelim <- do.call(rbind, plates) %>%
+    dplyr::mutate(drug = prelim.design$drug[[i]], 
+                  Metadata_Plate = sprintf("p%02d", i))
+  design.plates[[i]] <- plate.prelim %>%
+    dplyr::select(Metadata_Plate,Metadata_Well,assay_type,food_conc_OD,food_type,diluent,drug,concentration_um,strain,bleach,
+                  diluent_concentration_perc,drug_stock_prep_date,drug_prep_method, well.num, row) %>% 
+    dplyr::mutate(well_censor = "",
+                  well_censor_reason = "",
+                  notes = "")
+}
+
+design.df <- do.call(rbind, design.plates) 
+
+# Write Design File
+setwd("~/Documents/projects/NemaDose/")
+today <- format(Sys.time(), '%Y%m%d')
+design.df %>%
+  dplyr::select(-row, -well.num) %>%
+  write.csv(., paste(today, params$assay, "design.csv", sep = "_"), row.names = F, quote = F)
+
+plot.design.df <- design.df %>%
+  dplyr::mutate(row = as.factor(row)) %>%
+  dplyr::mutate(well.num = as.factor(well.num)) %>%
+  droplevels()
+```
+
+```{r echo=FALSE, fig.height=8, fig.width=12, message=FALSE, warning=FALSE, paged.print=TRUE, results='asis'}
+strain.table <- plot.design.df %>%
+  dplyr::group_by(strain, row) %>%
+  dplyr::summarise(n()) %>%
+  dplyr::arrange(strain) %>%
+  dplyr::select(-`n()`)
+print(knitr::kable(strain.table, format = "markdown", digits = 3))
+plot.design.df$row <- factor(plot.design.df$row, levels = rev(levels(plot.design.df$row)))
+ggplot(plot.design.df, mapping = aes(x = well.num, y = row, fill = strain, alpha = log(concentration_um))) + 
+  theme_minimal() + 
+  geom_tile() + 
+  facet_wrap(.~Metadata_Plate) +
+  scale_fill_brewer(name = "Strain", palette = "Spectral") + 
+  # theme(axis.text = element_blank(),
+  #       axis.ticks = element_blank(),
+  #       axis.title = element_blank()) + 
+  ggtitle("Assay Plates: Strain Layout")
+```
+
+```{r echo=FALSE, fig.height=8, fig.width=12, message=FALSE, warning=FALSE, paged.print=TRUE, results='asis'}
+drug.table <- plot.design.df %>%
+  dplyr::group_by(drug, Metadata_Plate) %>%
+  dplyr::summarise(n()) %>%
+  dplyr::arrange(Metadata_Plate) %>%
+  dplyr::select(-`n()`)
+print(knitr::kable(drug.table, format = "markdown", digits = 3))
+plot.design.df %>%
+  dplyr::mutate(plate.label = paste(Metadata_Plate, drug, sep = ": ")) %>%
+  dplyr::arrange(Metadata_Plate) %>%
+  ggplot(., mapping = aes(x = well.num, y = row, fill = drug, alpha = log(concentration_um))) + 
+  theme_minimal() + 
+  geom_tile() + 
+  facet_wrap(.~plate.label) +
+  scale_fill_brewer(name = "Drug", palette = "Set3") + 
+  # theme(axis.text = element_blank(),
+  #       axis.ticks = element_blank(),
+  #       axis.title = element_blank()) + 
+  ggtitle("Assay Plates: Drug Layout")
+```
+
+
+
+
+
