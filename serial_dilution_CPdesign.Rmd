@@ -127,11 +127,7 @@ for(i in 1:length(drug)){
 V_foodperdose = 25*Strains*Reps*N_Bleaches*(1+(Excess_Percent/100)) # 09A: used same extra percentage for dose as total food prep
 C_foodperwell = high_dose[i]*3 # 3X because drug is diluted 1:3 when fed to worms (50 uL/well) MICROMOLAR
 
-#temp excess volume edit
-# temp_excess = 1.1
-
-V_drugdilution = (V_foodperdose*.01) #*temp_excess # ^ Volume of drug to add to OD30 mixture, added to make OD30 + 1% Diluent with Drug
-# C_drugdilution = (C_foodperwell * V_foodperdose)/(V_drugdilution/temp_excess)
+V_drugdilution = (V_foodperdose*.01)  # ^ Volume of drug to add to OD30 mixture, added to make OD30 + 1% Diluent with Drug
 C_drugdilution = (C_foodperwell * V_foodperdose)/(V_drugdilution) # MICROMOLAR
 
 ###########
@@ -181,8 +177,8 @@ rownames(Dilution.Table) <- c("Final Dose in Well (uM)",
                               "Transfer Volume (uL)")
 serialdilutiontable[[i]] <- Dilution.Table
 Dose_Volume <- rep(V_drugdilution, N_Doses)
-fooddosetable <- data.frame(rbind((Dose_Volume/temp_excess),
-                                  (V_foodperdose-(Dose_Volume/temp_excess))
+fooddosetable <- data.frame(rbind((Dose_Volume),
+                                  (V_foodperdose-(Dose_Volume))
 ))
 colnames(fooddosetable) <- paste("Dose",rep(1:N_Doses), sep = " ")
 rownames(fooddosetable) <- c(paste(drug[i], "Dilution Volume to Add to OD30 (above)", sep = " "),
