@@ -4,7 +4,7 @@ subtitle: "`r params$assay`"
 author: "Sam Widmayer"
 params:
   date: "`r format(Sys.time(), '%d %B %Y')`"
-  assay: "toxin12A"
+  assay: "toxin14A"
 output: 
   html_document:
     css: drug.dilution.style.css
@@ -38,18 +38,12 @@ Excess_Percent = 10
 ########################################################
 ## Specify compounds of interest (remember spelling!) ##
 ########################################################
-ChosenDrugList = c("Aldicarb", 
-                   "Methomyl", 
-                   "Triphenyl phosphate", 
-                   "Pyraclostrobin", 
-                   "Cadmium dichloride", 
+ChosenDrugList = c("Cadmium dichloride",
                    "Copper(II) chloride",
-                   "Methylmercury dichloride",
                    "Nickel dichloride",
-                   "Silver nitrate",
-                   "Zinc dichloride",
                    "Paraquat",
-                   "Chlorfenapyr")
+                   "Silver nitrate",
+                   "Zinc dichloride")
 pre.DrugList <- compound.sheet %>%
   dplyr::select(Drug, DilutionFactors) %>%
   dplyr::filter(Drug %in% ChosenDrugList)
@@ -124,7 +118,7 @@ fooddoses <- list()
 for(i in 1:length(drug)){
 ## At what concentration should the drug be added to food?
 # V_foodperdose = 25*Strains*Reps*N_Bleaches*1.05 # 5% less excess for dose compared to total prep
-V_foodperdose = 25*Strains*Reps*N_Bleaches*(1+(Excess_Percent/100)) # 09A: used same extra percentage for dose as total food prep
+V_foodperdose = 25*Strains*Reps*N_Bleaches*(1.05) # 09A: used same extra percentage for dose as total food prep
 C_foodperwell = high_dose[i]*3 # 3X because drug is diluted 1:3 when fed to worms (50 uL/well) MICROMOLAR
 
 V_drugdilution = (V_foodperdose*.01)  # ^ Volume of drug to add to OD30 mixture, added to make OD30 + 1% Diluent with Drug
@@ -305,7 +299,7 @@ plot.design.df <- design.df %>%
   droplevels()
 ```
 
-```{r echo=FALSE, fig.height=8, fig.width=12, message=FALSE, warning=FALSE, paged.print=TRUE, results='asis'}
+```{r eval=FALSE, fig.height=8, fig.width=12, message=FALSE, warning=FALSE, include=FALSE, paged.print=TRUE, results='asis'}
 strain.table <- plot.design.df %>%
   dplyr::group_by(strain, row) %>%
   dplyr::summarise(n()) %>%
@@ -324,7 +318,7 @@ ggplot(plot.design.df, mapping = aes(x = well.num, y = row, fill = strain, alpha
   ggtitle("Assay Plates: Strain Layout")
 ```
 
-```{r echo=FALSE, fig.height=8, fig.width=12, message=FALSE, warning=FALSE, paged.print=TRUE, results='asis'}
+```{r eval=FALSE, fig.height=8, fig.width=12, message=FALSE, warning=FALSE, include=FALSE, paged.print=TRUE, results='asis'}
 drug.table <- plot.design.df %>%
   dplyr::group_by(drug, Metadata_Plate) %>%
   dplyr::summarise(n()) %>%
