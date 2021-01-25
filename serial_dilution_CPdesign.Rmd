@@ -4,7 +4,7 @@ subtitle: "`r params$assay`"
 author: "Sam Widmayer"
 params:
   date: "`r format(Sys.time(), '%d %B %Y')`"
-  assay: "toxin14A"
+  assay: "toxin16A"
 output: 
   html_document:
     css: drug.dilution.style.css
@@ -38,12 +38,12 @@ Excess_Percent = 10
 ########################################################
 ## Specify compounds of interest (remember spelling!) ##
 ########################################################
-ChosenDrugList = c("Cadmium dichloride",
-                   "Copper(II) chloride",
-                   "Nickel dichloride",
-                   "Paraquat",
-                   "Silver nitrate",
-                   "Zinc dichloride")
+ChosenDrugList = c("Arsenic trioxide",
+                   "Atrazine",
+                   "Carbaryl",
+                   "Carboxin",
+                   "Chlorpyrifos",
+                   "Lead(II) nitrate")
 pre.DrugList <- compound.sheet %>%
   dplyr::select(Drug, DilutionFactors) %>%
   dplyr::filter(Drug %in% ChosenDrugList)
@@ -196,9 +196,8 @@ kable_loop <- function(w, x, y, z){
 purrr::pmap(looplist, kable_loop) %>% compact()
 ```
 
-### Plate Design(s):
 
-```{r message=TRUE, warning=TRUE, include=FALSE}
+```{r eval=FALSE, message=TRUE, warning=TRUE, include=FALSE}
 # Constants
 assay_type <- "48h"
 food_conc_OD <- 10

@@ -1,18 +1,18 @@
 Drug,High_Dose_uM,Drug_Stock_Concentration_mM,highest_concentration_possible_48hassay_at_1%DMSO_uM,drug_stock_prep_date,total_stock_vol_made_uL,stock_made,number_of_aliquots_made,vol_of_aliquots_uL,box,diluent,DilutionFactors,drug_notes
 "2,4-D",1000,500,1666.7,20200126,1000,yes,36,12,,DMSO,2,
 Aldicarb,5000,2000,6666.7,20200126,250,yes,25,10,5,DMSO,2,
-Arsenic trioxide,1500,450,1500,20200623,1000,yes,36,12,14,water,2,1M NaOH used as diluent for stock not pure water
-Atrazine,1500,500,1666.7,20200126,1000,yes,36,12,,DMSO,2,
+Arsenic trioxide,1500,450,1500,20200623,1000,yes,36,12,14,water,1.15,1M NaOH used as diluent for stock not pure water
+Atrazine,1500,500,1666.7,20200126,1000,yes,36,12,,DMSO,1.4,
 Cadmium dichloride,200,500,1666.7,20200126,1000,yes,36,12,1,water,2,
-Carbaryl,1250,500,1666.7,20200126,1000,yes,36,12,5,DMSO,2,
-Carboxin,2500,1000,3333.3,20200126,1000,yes,36,12,,DMSO,2,
+Carbaryl,1250,500,1666.7,20200126,1000,yes,36,12,5,DMSO,1.25,
+Carboxin,2500,1000,3333.3,20200126,1000,yes,36,12,,DMSO,1.3,
 Chlorfenapyr,10,500,1666.7,20200126,250,yes,36,5,10,DMSO,2,
 Chlorothalonil,250,75,250,20200617,,yes,,,,DMSO,2,
-Chlorpyrifos,40,100,333.3,20200618,1000,yes,36,12,14,DMSO,2,
+Chlorpyrifos,20,100,333.3,20200618,1000,yes,36,12,14,DMSO,1.4,
 Copper(II) chloride,200,500,1666.7,20200126,1000,yes,36,12,1,water,2,
 D-phenothrin,5000,1500,5000,20200618,150,yes,,,,DMSO,2,
 Deltamethrin,2500,750,2500,20200623,200,yes,12,12,15,DMSO,2,56C for with shaking for 10min to disolve stock.
-Lead(II) nitrate,1000,500,1666.7,20200126,1000,yes,36,12,,water,2,
+Lead(II) nitrate,1000,500,1666.7,20200126,1000,yes,36,12,,water,1.35,
 Malathion,4000,1200,4000,20200618,250,yes,12,12,15,DMSO,2,
 Mancozeb,250,75,250,20200126,350,yes,,,,DMSO,2,"not soluble, dose of stock is in suspension. NEED TO CHECK ON CORRECT STOCK!"
 Manganese dichloride,2000,1000,3333.3,20200126,1000,yes,36,12,2,water,2,
