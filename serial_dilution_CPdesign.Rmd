@@ -86,8 +86,8 @@ n_microcentrifuge <- ifelse(n_microcentrifuge < 0, 0, n_microcentrifuge)
 #### ```r N_Bleaches``` Independent Bleach(es)
 #### ```r Strains``` Strain(s): ```r Strain.List```
 #### ```r N_Doses``` Doses of ```r Drugs``` Compounds
-#### ```r Reps``` Replicates of each Dose per Strain
-#### ```r Excess_Percent```% Excess Accounted for in Design
+#### ```r Reps``` Replicates of Each Dose per Strain
+#### ```r Excess_Percent```% Excess HB101 OD30 Preparation Accounted For
 
 #### Chosen Dilution Factors:
 ```{r echo=FALSE}
@@ -117,8 +117,7 @@ fooddoses <- list()
 
 for(i in 1:length(drug)){
 ## At what concentration should the drug be added to food?
-# V_foodperdose = 25*Strains*Reps*N_Bleaches*1.05 # 5% less excess for dose compared to total prep
-V_foodperdose = 25*Strains*Reps*N_Bleaches*(1.05) # 09A: used same extra percentage for dose as total food prep
+V_foodperdose = 25*Strains*Reps*N_Bleaches*(1.02) # 2% less excess for dose compared to total prep
 C_foodperwell = high_dose[i]*3 # 3X because drug is diluted 1:3 when fed to worms (50 uL/well) MICROMOLAR
 
 V_drugdilution = (V_foodperdose*.01)  # ^ Volume of drug to add to OD30 mixture, added to make OD30 + 1% Diluent with Drug
