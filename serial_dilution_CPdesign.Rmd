@@ -16,7 +16,8 @@ require(RColorBrewer)
 require(knitr)
 require(kableExtra)
 # opts_knit$set(root.dir=normalizePath('../'))
-setwd("~/Documents/projects/NemaDose/") # Set to repo directory
+# setwd("~/Documents/projects/NemaDose/") # Set to repo directory
+setwd("~/Documents/AndersenLab/NemaDose/") # Set to repo directory
 options(knitr.table.format = "html") 
 options(width = 10000)
 knitr::opts_chunk$set(echo = TRUE)

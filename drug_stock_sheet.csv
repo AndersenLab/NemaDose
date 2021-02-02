@@ -1,7 +1,7 @@
 Drug,High_Dose_uM,Drug_Stock_Concentration_mM,highest_concentration_possible_48hassay_at_1%DMSO_uM,drug_stock_prep_date,total_stock_vol_made_uL,stock_made,number_of_aliquots_made,vol_of_aliquots_uL,box,diluent,DilutionFactors,drug_notes
 "2,4-D",1000,500,1666.7,20200126,1000,yes,36,12,,DMSO,2,
 Aldicarb,5000,2000,6666.7,20200126,250,yes,25,10,5,DMSO,2,
-Arsenic trioxide,1500,450,1500,20200623,1000,yes,36,12,14,water,1.15,1M NaOH used as diluent for stock not pure water
+Arsenic trioxide,1250,450,1500,20200623,1000,yes,36,12,14,water,1.2,1M NaOH used as diluent for stock not pure water
 Atrazine,1500,500,1666.7,20200126,1000,yes,36,12,,DMSO,1.4,
 Cadmium dichloride,200,500,1666.7,20200126,1000,yes,36,12,1,water,2,
 Carbaryl,1250,500,1666.7,20200126,1000,yes,36,12,5,DMSO,1.25,
