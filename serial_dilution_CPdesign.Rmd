@@ -4,7 +4,7 @@ subtitle: "`r params$assay`"
 author: "Sam Widmayer"
 params:
   date: "`r format(Sys.time(), '%d %B %Y')`"
-  assay: "toxin17A"
+  assay: "toxin23A"
 output: 
   html_document:
     css: drug.dilution.style.css
@@ -18,7 +18,7 @@ require(kableExtra)
 # opts_knit$set(root.dir=normalizePath('../'))
 setwd("~/Documents/projects/NemaDose/") # Set to repo directory
 # setwd("~/Documents/AndersenLab/NemaDose/") # Set to repo directory
-options(knitr.table.format = "html") 
+options(knitr.table.format = "html")
 options(width = 10000)
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -28,7 +28,7 @@ compound.sheet <- read.csv("drug_stock_sheet.csv")
 ```
 
 ```{r echo=FALSE}
-Strain.List = c("PD1074","CB4856","RC301","ECA248","MY16","ECA36","ECA396","XZ1516")
+Strain.List = c("PD1074","CB4856","RC301","MY16","ECA36","ECA396","XZ1516","ECA248")
 Strains = length(Strain.List)
 Reps = 4
 N_Doses = 12
@@ -39,12 +39,12 @@ Excess_Percent = 10
 ########################################################
 ## Specify compounds of interest (remember spelling!) ##
 ########################################################
-ChosenDrugList = c("Arsenic trioxide",
-                   "Atrazine",
-                   "Carbaryl",
-                   "Carboxin",
-                   "Chlorpyrifos",
-                   "Lead(II) nitrate")
+ChosenDrugList = c("Chlorothalonil",
+                   "Deltamethrin",
+                   "Malathion",
+                   "2,4-D",
+                   "Manganese dichloride",
+                   "Propoxur")
 pre.DrugList <- compound.sheet %>%
   dplyr::select(Drug, DilutionFactors) %>%
   dplyr::filter(Drug %in% ChosenDrugList)
@@ -118,7 +118,7 @@ fooddoses <- list()
 
 for(i in 1:length(drug)){
 ## At what concentration should the drug be added to food?
-V_foodperdose = 25*Strains*Reps*N_Bleaches*(1.02) # 2% less excess for dose compared to total prep
+V_foodperdose = 25*Strains*Reps*N_Bleaches*(1.02) # 1.5% less excess for dose compared to total prep
 C_foodperwell = high_dose[i]*3 # 3X because drug is diluted 1:3 when fed to worms (50 uL/well) MICROMOLAR
 
 V_drugdilution = (V_foodperdose*.01)  # ^ Volume of drug to add to OD30 mixture, added to make OD30 + 1% Diluent with Drug
